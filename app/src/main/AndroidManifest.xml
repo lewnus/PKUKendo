@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="pkukendoclub.pkukendo" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Kendo"
+            android:label="@string/title_activity_kendo" >
+        </activity>
+        <activity
+            android:name=".fragments.mMessage"
+            android:label="@string/title_activity_m_message" >
+        </activity>
+        <activity
+            android:name=".fragments.mList"
+            android:label="@string/title_activity_m_list" >
+        </activity>
+        <activity
+            android:name=".fragments.mYear"
+            android:label="@string/title_activity_m_year" >
+        </activity>
+        <activity
+            android:name=".fragments.mMe"
+            android:label="@string/title_activity_m_me" >
+        </activity>
+        <activity
+            android:name=".Aboutus"
+            android:label="@string/title_activity_aboutus" >
+        </activity>
+        <activity
+            android:name=".mName"
+            android:label="@string/title_activity_m_name" >
+        </activity>
+        <activity
+            android:name=".mNote"
+            android:label="@string/title_activity_m_note" >
+        </activity>
+        <activity
+            android:name=".mPassword"
+            android:label="@string/title_activity_m_password" >
+        </activity>
+    </application>
+
+</manifest>
