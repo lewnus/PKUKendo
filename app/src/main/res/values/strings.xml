@@ -41,5 +41,6 @@
     <color name="background">#e5e5e5</color>
     <color name="transparent_background">#50000000</color>
     <color name="Grey">#BEBEBE</color>
+    <string name="title_activity_clip">Clip</string>
 
 </resources>

@@ -52,6 +52,10 @@
             android:name=".mPassword"
             android:label="@string/title_activity_m_password" >
         </activity>
+        <activity
+            android:name=".Clip"
+            android:label="@string/title_activity_clip" >
+        </activity>
     </application>
 
 </manifest>

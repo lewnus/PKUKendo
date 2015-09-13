@@ -37,7 +37,7 @@ public class mList extends Fragment implements
 
 
     private PinnedHeaderExpandableListView expandableListView;
-    private StickyLayout stickyLayout;
+   // private StickyLayout stickyLayout;
     private ArrayList<Group> groupList;
     private ArrayList<List<People>> childList;
 
@@ -57,7 +57,7 @@ public class mList extends Fragment implements
         super.onStart();
 
         expandableListView = (PinnedHeaderExpandableListView) getActivity().findViewById(R.id.expandablelist);
-        stickyLayout = (StickyLayout)getActivity().findViewById(R.id.sticky_layout);
+     //   stickyLayout = (StickyLayout)getActivity().findViewById(R.id.sticky_layout);
         initData();
 
         adapter = new MyexpandableListAdapter(this.getActivity());
@@ -71,7 +71,7 @@ public class mList extends Fragment implements
         expandableListView.setOnHeaderUpdateListener(this);
         expandableListView.setOnChildClickListener(this);
         expandableListView.setOnGroupClickListener(this);
-        stickyLayout.setOnGiveUpTouchEventListener(this);
+    //    stickyLayout.setOnGiveUpTouchEventListener(this);
 
     }
 
@@ -82,12 +82,12 @@ public class mList extends Fragment implements
      */
 
     //String[] data1 = new String[]{"aaa","aaa","bbb","ccc","ccc","ccc",};
-    String[] data1 = new String[]{"aaa","bbb","ccc"};
+    String[] data1 = new String[]{"社长","14级寒来","13级暑假"};
     String[] data2 = new String[]{"a","b","c","d","e","f",};
     String[] data3 = new String[]{"A","B","C","D","E","F",};
     int datanum = 6;
 
-
+/*
     void initData() {
         groupList = new ArrayList<Group>();
         Group group = null;
@@ -105,28 +105,81 @@ public class mList extends Fragment implements
             ArrayList<People> childTemp;
             if (i == 0) {
                 childTemp = new ArrayList<People>();
-                for (int j = 0; j < 2; j++) {
+                for (int j = 0; j < 20; j++) {
                     People people = new People();
-                    people.setName(data2[j]);
-                    people.setAddress(data3[j]);
+                    people.setName(data2[0]);
+                    people.setAddress(data3[0]);
 
                     childTemp.add(people);
                 }
             } else if (i == 1) {
                 childTemp = new ArrayList<People>();
-                for (int j = 0; j < 1; j++) {
+                for (int j = 0; j < 10; j++) {
                     People people = new People();
-                    people.setName(data2[2+j]);
-                    people.setAddress(data3[2+j]);
+                    people.setName(data2[2]);
+                    people.setAddress(data3[2]);
 
                     childTemp.add(people);
                 }
             } else {
                 childTemp = new ArrayList<People>();
-                for (int j = 0; j < 3; j++) {
+                for (int j = 0; j < 18; j++) {
                     People people = new People();
-                    people.setName(data2[3+j]);
-                    people.setAddress(data3[3+j]);
+                    people.setName(data2[3]);
+                    people.setAddress(data3[3]);
+
+                    childTemp.add(people);
+                }
+            }
+            childList.add(childTemp);
+        }
+
+    }
+*/
+
+    void initData() {
+        groupList = new ArrayList<Group>();
+        Group group = null;
+        for (int i = 0; i < 3; i++) {
+            group = new Group();
+            if (i==0)
+            group.setTitle("gg");
+            else
+            group.setTitle("aaaaaaaaa-2");
+
+            groupList.add(group);
+        }
+
+        childList = new ArrayList<List<People>>();
+        for (int i = 0; i < groupList.size(); i++) {
+            ArrayList<People> childTemp;
+            if (i == 0) {
+                childTemp = new ArrayList<People>();
+                for (int j = 0; j < 13; j++) {
+                    People people = new People();
+                    people.setName("yy-" + j);
+                   // people.setAge(30);
+                    people.setAddress("sh-" + j);
+
+                    childTemp.add(people);
+                }
+            } else if (i == 1) {
+                childTemp = new ArrayList<People>();
+                for (int j = 0; j < 8; j++) {
+                    People people = new People();
+                    people.setName("ff-" + j);
+                   // people.setAge(40);
+                    people.setAddress("sh-" + j);
+
+                    childTemp.add(people);
+                }
+            } else {
+                childTemp = new ArrayList<People>();
+                for (int j = 0; j < 23; j++) {
+                    People people = new People();
+                    people.setName("hh-" + j);
+                   // people.setAge(20);
+                    people.setAddress("sh-" + j);
 
                     childTemp.add(people);
                 }
