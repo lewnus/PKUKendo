@@ -5,31 +5,47 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.view.View;
+import android.widget.TextView;
 import com.avos.avoscloud.AVOSCloud;
-import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.AVObject;
 
 
-public class MainActivity extends ActionBarActivity {
+public class FirstPage extends ActionBarActivity {
+
+    TextView mLogin;
+    TextView mRegister;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        AVOSCloud.initialize(this, "ql84x2woif2u3xk7p3qoska4i558v3ornikfkfga1l3ad59n", "frzrwer3k3demoxounucm0ubfqzlvongad1h30avewweycd9");
-
-        AVUser currentUser = AVUser.getCurrentUser();
-        int x=1;
-        if (currentUser != null) {
-            Intent myIntent =new Intent(MainActivity.this, Kendo.class);
-            startActivity(myIntent);
-        } else {
-            Intent myIntent =new Intent(MainActivity.this, FirstPage.class);
-            startActivity(myIntent);
-        }
+        setContentView(R.layout.activity_first_page);
 
 
+
+        //avos
+
+
+        //init
+        mLogin = (TextView)findViewById(R.id.mLogin);
+        mRegister = (TextView)findViewById(R.id.mRegister);
+
+        mLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FirstPage.this, mLogin.class);
+                startActivity(intent);
+            }
+        });
+
+        mRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FirstPage.this, mRegister.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -37,7 +53,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_first_page, menu);
         return true;
     }
 

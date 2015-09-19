@@ -9,12 +9,34 @@
      android:dividerHeight 这个高度一定要设置，不然显示不出来分割线，估计默认为0 吧
      android:childDivider="@drawable/child_bg" 这个直接引color,或者图片会导致整个孩子背景都为这个颜色
     -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:orientation="horizontal"
+        android:background="#353535">
+
+        <TextView
+            android:gravity="center_horizontal"
+            android:id="@+id/no_use1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:textSize="20sp"
+            android:text="剑道社通讯录"
+            android:textColor="#ffffff"
+            />
+    </LinearLayout>
 
 
-        <LinearLayout
+
+    <LinearLayout
             android:id="@+id/sticky_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="42dp"
             android:orientation="vertical" >
 
             <pkukendoclub.pkukendo.tools.PinnedHeaderExpandableListView
@@ -22,6 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:cacheColorHint="@null"
+
                 android:childDivider="@drawable/child_bg"
                 android:childIndicatorLeft="0dp"
                 android:divider="@color/Grey"

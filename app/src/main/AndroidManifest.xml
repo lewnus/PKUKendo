@@ -2,6 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pkukendoclub.pkukendo" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -55,6 +66,26 @@
         <activity
             android:name=".Clip"
             android:label="@string/title_activity_clip" >
+        </activity>
+        <activity
+            android:name=".FirstPage"
+            android:label="@string/title_activity_first_page" >
+        </activity>
+        <activity
+            android:name=".mRegister"
+            android:label="@string/title_activity_m_register" >
+        </activity>
+        <activity
+            android:name=".mLogin"
+            android:label="@string/title_activity_m_login" >
+        </activity>
+        <activity
+            android:name=".Agreement"
+            android:label="@string/title_activity_agreement" >
+        </activity>
+        <activity
+            android:name=".Info"
+            android:label="@string/title_activity_info" >
         </activity>
     </application>
 

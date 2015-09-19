@@ -21,6 +21,11 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.GetDataCallback;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -65,8 +70,15 @@ public class mMe extends Fragment {
         cImageView = (ImageView) getActivity().findViewById(R.id.cImageView);
         text_name = (TextView) getActivity().findViewById(R.id.uname);
 
+        AVUser currentUser = AVUser.getCurrentUser();
+        text_name.setText(currentUser.getString("NickName"));
+        AVFile avFile = currentUser.getAVFile("Avartar");
+        avFile.getDataInBackground(new GetDataCallback(){
+            public void done(byte[] data, AVException e){
+                cImageView.setImageBitmap(BitmapFactory.decodeByteArray(data, 0, data.length));
+            }
+        });
 
-        text_name.setText("孙伟");
 
 
         cImageView.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +149,7 @@ public class mMe extends Fragment {
                             case 1:
                                 // 相机
                                 Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                Uri imageUri = Uri.fromFile(new File(Environment.getDataDirectory().getPath(),IMAGE_FILE_NAME));
+                                Uri imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),IMAGE_FILE_NAME));
                                 //指定照片保存路径（SD卡），一个临时文件，每次拍照后这个图片都会被替换
                                 openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                                 startActivityForResult(openCameraIntent, 1);
@@ -157,7 +169,8 @@ public class mMe extends Fragment {
     //  响应之前的调用
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == getActivity().RESULT_CANCELED) {
+
+        if (resultCode != getActivity().RESULT_OK) {
 
             return;
         }
@@ -186,9 +199,9 @@ public class mMe extends Fragment {
 
             case 1:
 
-                String img_path2 = Environment.getDataDirectory().getPath() +"/"+IMAGE_FILE_NAME;
+                String img_path2 = Environment.getExternalStorageDirectory() +"/"+IMAGE_FILE_NAME;
 
-                    //todo  work
+
 
                 Intent myIntent2 =new Intent(getActivity(), Clip.class);
                 Bundle mybundle2 = new Bundle();
