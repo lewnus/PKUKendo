@@ -25,9 +25,12 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.GetDataCallback;
+import com.avos.avoscloud.SaveCallback;
+import com.avos.avoscloud.SignUpCallback;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -45,6 +48,8 @@ public class mMe extends Fragment {
     private String   IMAGE_FILE_NAME= "PKUkendo_tempimg.jpg";
     private String[] items = new String[] { "选择本地图片", "拍照" };
 
+    public static int clipflag = 0;
+    public static Bitmap bitmap_from_clip;
 
     private TextView text_name;
 
@@ -52,7 +57,9 @@ public class mMe extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_m_me, container, false);
+
     }
+
 
 
     @Override
@@ -170,7 +177,7 @@ public class mMe extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (resultCode != getActivity().RESULT_OK) {
+        if (requestCode!=2 && resultCode != getActivity().RESULT_OK) {
 
             return;
         }
@@ -193,7 +200,7 @@ public class mMe extends Fragment {
                 Bundle mybundle = new Bundle();
                 mybundle.putString("message",img_path);
                 myIntent.putExtras(mybundle);
-                startActivity(myIntent);
+                startActivityForResult(myIntent, 2);
 
                 break;
 
@@ -207,16 +214,98 @@ public class mMe extends Fragment {
                 Bundle mybundle2 = new Bundle();
                 mybundle2.putString("message",img_path2);
                 myIntent2.putExtras(mybundle2);
-                startActivity(myIntent2);
+                startActivityForResult(myIntent2, 2);
 
                 break;
 
+            case 2://from clip
+
+                if (mMe.clipflag==1){
+                    mMe.clipflag = 0;
+                    String img_path3 = savePhotoToSDCard(bitmap_from_clip,Environment.getExternalStorageDirectory().toString(),IMAGE_FILE_NAME );
+                    try{
+                        AVFile file = AVFile.withAbsoluteLocalPath(IMAGE_FILE_NAME , Environment.getExternalStorageDirectory()+"/" +IMAGE_FILE_NAME );
+                        AVUser currentUser = AVUser.getCurrentUser();
+                        currentUser.put("Avartar", file);
+                        currentUser.saveInBackground(new SaveCallback() {
+
+                            public void done(AVException e) {
+                                if (e == null) {
+                                    setDig("上传成功");
+                                    cImageView.setImageBitmap(bitmap_from_clip);
+                                } else {
+                                    setDig("上传失败");
+                                }
+                            }
+                        });
+                    }catch (FileNotFoundException e){
+                        //TODO
+                        setDig("上传失败file");
+                    }catch (IOException e){
+                        setDig("上传失败io");
+                        //TODO
+                    }
+
+
+                    //
+
+                }
+
+                break;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
 
 
+
+    private String savePhotoToSDCard(Bitmap photoBitmap,String path,String photoName){
+
+        File dir = new File(path);
+        if (!dir.exists()){
+            dir.mkdirs();
+        }
+        File photoFile = new File(path , photoName);
+        String filepath = photoFile.getAbsolutePath();
+
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(photoFile);
+            if (photoBitmap != null) {
+                if (photoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)) {
+                    fileOutputStream.flush();
+//						fileOutputStream.close();
+                }
+            }
+        } catch (FileNotFoundException e) {
+            photoFile.delete();
+            e.printStackTrace();
+        } catch (IOException e) {
+            photoFile.delete();
+            e.printStackTrace();
+        } finally{
+            try {
+                fileOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return  filepath;
+    }
+
+
+    private void setDig(String message){
+        new AlertDialog.Builder(getActivity())
+                .setTitle(message)
+                .setNegativeButton("确认", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
+
+    }
 
 }
 
