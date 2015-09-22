@@ -49,6 +49,9 @@
 
     <color name="swBlue">#129aff</color>
     <color name="swGray">#ebebf1</color>
+    <color name="swGroup">#a0e5e5e5</color>>
+    <color name="swGroup2">#ffe5e5e5</color>>
     <string name="title_activity_info">Info</string>
+    <string name="title_activity_info4list">Info4list</string>
 
 </resources>

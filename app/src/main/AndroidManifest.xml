@@ -84,8 +84,8 @@
             android:label="@string/title_activity_agreement" >
         </activity>
         <activity
-            android:name=".Info"
-            android:label="@string/title_activity_info" >
+            android:name=".Info4list"
+            android:label="@string/title_activity_info4list" >
         </activity>
     </application>
 

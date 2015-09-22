@@ -49,10 +49,10 @@ public class mPassword extends ActionBarActivity {
                 if (newPassword.getText().toString().equals("")) { setDig("新密码为空！"); return; }
                 if (!newPassword.getText().toString().equals(newPassword2.getText().toString())) { setDig("两次密码不相符！");  return; }
 
-                try {
+               // try {
                     AVUser currentUser = AVUser.getCurrentUser();
-                    AVUser userA = AVUser.logIn(currentUser.getUsername(),oldPassword.getText().toString() );//请确保用户当前的有效登录状态
-                    userA.updatePasswordInBackground(oldPassword.getText().toString(), newPassword.getText().toString(), new UpdatePasswordCallback() {
+                 //   AVUser userA = AVUser.logIn(currentUser.getUsername(),oldPassword.getText().toString() );//请确保用户当前的有效登录状态
+                    currentUser.updatePasswordInBackground(oldPassword.getText().toString(), newPassword.getText().toString(), new UpdatePasswordCallback() {
 
                         @Override
                         public void done(AVException e) {
@@ -73,7 +73,7 @@ public class mPassword extends ActionBarActivity {
                             }
                         }
                     });
-                }catch (AVException e){
+                /*}catch (AVException e){
                     if (e.getCode()==AVException.INTERNAL_SERVER_ERROR)
                         setDig("网络异常！");
                     else
@@ -84,7 +84,7 @@ public class mPassword extends ActionBarActivity {
                         setDig("原密码错误！");
                     else
                         setDig("登陆失败，错误码："+e.getCode());
-                }
+                }*/
             }
         });
 

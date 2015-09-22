@@ -1,6 +1,8 @@
 package pkukendoclub.pkukendo.fragments;
 
 
+        import pkukendoclub.pkukendo.Clip;
+        import pkukendoclub.pkukendo.Info4list;
         import pkukendoclub.pkukendo.R;
         import pkukendoclub.pkukendo.tools.PinnedHeaderExpandableListView;
         import pkukendoclub.pkukendo.tools.StickyLayout;
@@ -10,6 +12,7 @@ package pkukendoclub.pkukendo.fragments;
         import android.app.Activity;
         import android.app.Fragment;
         import android.content.Context;
+        import android.content.Intent;
         import android.os.Bundle;
         import android.view.LayoutInflater;
         import android.view.MotionEvent;
@@ -23,6 +26,12 @@ package pkukendoclub.pkukendo.fragments;
         import android.widget.ImageView;
         import android.widget.TextView;
         import android.widget.Toast;
+
+        import com.avos.avoscloud.AVException;
+        import com.avos.avoscloud.AVObject;
+        import com.avos.avoscloud.AVQuery;
+        import com.avos.avoscloud.FindCallback;
+
         import java.util.ArrayList;
         import java.util.List;
 
@@ -60,7 +69,7 @@ public class mList extends Fragment implements
      //   stickyLayout = (StickyLayout)getActivity().findViewById(R.id.sticky_layout);
         initData();
 
-        adapter = new MyexpandableListAdapter(this.getActivity());
+        /*adapter = new MyexpandableListAdapter(this.getActivity());
         expandableListView.setAdapter(adapter);
 
         // 展开所有group
@@ -70,7 +79,8 @@ public class mList extends Fragment implements
 
         expandableListView.setOnHeaderUpdateListener(this);
         expandableListView.setOnChildClickListener(this);
-        expandableListView.setOnGroupClickListener(this);
+        expandableListView.setOnGroupClickListener(this);*/
+
     //    stickyLayout.setOnGiveUpTouchEventListener(this);
 
     }
@@ -81,113 +91,66 @@ public class mList extends Fragment implements
      * InitData
      */
 
-    //String[] data1 = new String[]{"aaa","aaa","bbb","ccc","ccc","ccc",};
-    String[] data1 = new String[]{"社长","14级寒来","13级暑假"};
-    String[] data2 = new String[]{"a","b","c","d","e","f",};
-    String[] data3 = new String[]{"A","B","C","D","E","F",};
-    int datanum = 6;
+    String[] data1 = new String[]{"aaa","aaa","bbb","ccc","ccc","ccc",};
+    //String[] data1;
 
-/*
-    void initData() {
-        groupList = new ArrayList<Group>();
-        Group group = null;
-        for (int i = 0; i < 3; i++) {
-            group = new Group();
-            group.setTitle(data1[i]);
-            groupList.add(group);
-        }
-
-        childList = new ArrayList<List<People>>();
-
-
-
-        for (int i = 0; i < groupList.size(); i++) {
-            ArrayList<People> childTemp;
-            if (i == 0) {
-                childTemp = new ArrayList<People>();
-                for (int j = 0; j < 20; j++) {
-                    People people = new People();
-                    people.setName(data2[0]);
-                    people.setAddress(data3[0]);
-
-                    childTemp.add(people);
-                }
-            } else if (i == 1) {
-                childTemp = new ArrayList<People>();
-                for (int j = 0; j < 10; j++) {
-                    People people = new People();
-                    people.setName(data2[2]);
-                    people.setAddress(data3[2]);
-
-                    childTemp.add(people);
-                }
-            } else {
-                childTemp = new ArrayList<People>();
-                for (int j = 0; j < 18; j++) {
-                    People people = new People();
-                    people.setName(data2[3]);
-                    people.setAddress(data3[3]);
-
-                    childTemp.add(people);
-                }
-            }
-            childList.add(childTemp);
-        }
-
-    }
-*/
 
     void initData() {
+
         groupList = new ArrayList<Group>();
-        Group group = null;
-        for (int i = 0; i < 3; i++) {
-            group = new Group();
-            if (i==0)
-            group.setTitle("gg");
-            else
-            group.setTitle("aaaaaaaaa-2");
-
-            groupList.add(group);
-        }
-
         childList = new ArrayList<List<People>>();
-        for (int i = 0; i < groupList.size(); i++) {
-            ArrayList<People> childTemp;
-            if (i == 0) {
-                childTemp = new ArrayList<People>();
-                for (int j = 0; j < 13; j++) {
-                    People people = new People();
-                    people.setName("yy-" + j);
-                   // people.setAge(30);
-                    people.setAddress("sh-" + j);
 
-                    childTemp.add(people);
-                }
-            } else if (i == 1) {
-                childTemp = new ArrayList<People>();
-                for (int j = 0; j < 8; j++) {
-                    People people = new People();
-                    people.setName("ff-" + j);
-                   // people.setAge(40);
-                    people.setAddress("sh-" + j);
+        AVQuery<AVObject> query = new AVQuery<AVObject>("Contact");
+        query.whereGreaterThan("sort",0);
+        query.orderByAscending("sort");
+        query.findInBackground(new FindCallback<AVObject>() {
+            public void done(List<AVObject> postList, AVException e) {
+                int ma = 0;
+                for (int i = 0; i < postList.size(); i++)
+                    ma = Math.max(ma, postList.get(i).getInt("sort"));
 
-                    childTemp.add(people);
+                //get group title
+                data1 = new String[ma];
+                for (int i = 0; i < postList.size(); i++)
+                    data1[postList.get(i).getInt("sort") - 1] = postList.get(i).getString("group");
+                for (int i = 0; i < ma; i++) {
+                    Group group = null;
+                    group = new Group();
+                    group.setTitle(data1[i]);
+                    groupList.add(group);
                 }
-            } else {
-                childTemp = new ArrayList<People>();
-                for (int j = 0; j < 23; j++) {
-                    People people = new People();
-                    people.setName("hh-" + j);
-                   // people.setAge(20);
-                    people.setAddress("sh-" + j);
 
-                    childTemp.add(people);
+                //get child
+                for (int i = 0; i < postList.size(); i++) {
+                    People people = new People();
+                    people.people = postList.get(i);
+                    groupList.get(postList.get(i).getInt("sort") - 1).child.add(people);
                 }
+                for (int i = 0; i < ma; i++)
+                    childList.add(groupList.get(i).child);
+
+
+
+                adapter = new MyexpandableListAdapter(mList.this.getActivity());
+                expandableListView.setAdapter(adapter);
+
+                // 展开所有group
+                for (int i = 0, count = expandableListView.getCount(); i < count; i++) {
+                    expandableListView.expandGroup(i);
+                }
+
+                expandableListView.setOnHeaderUpdateListener(mList.this);
+                expandableListView.setOnChildClickListener(mList.this);
+                expandableListView.setOnGroupClickListener(mList.this);
             }
-            childList.add(childTemp);
-        }
+        });
+
+
+
 
     }
+
+
 
     /***
      * 数据源
@@ -292,7 +255,7 @@ public class mList extends Fragment implements
             childHolder.textName.setText(((People) getChild(groupPosition,
                     childPosition)).getName());
             childHolder.textDuty.setText(((People) getChild(groupPosition,
-                    childPosition)).getAddress());
+                    childPosition)).getDuty());
 
             return convertView;
         }
@@ -313,10 +276,21 @@ public class mList extends Fragment implements
     @Override
     public boolean onChildClick(ExpandableListView parent, View v,
                                 int groupPosition, int childPosition, long id) {
-        Toast.makeText(getActivity(),
-                childList.get(groupPosition).get(childPosition).getName(), 1)
-                .show();
-
+       
+        People p = groupList.get(groupPosition).child.get(childPosition);
+        Intent myIntent =new Intent(getActivity(), Info4list.class);
+        Bundle mybundle = new Bundle();
+        mybundle.putString("name",p.getName());
+        mybundle.putString("duty",p.getDuty());
+        mybundle.putString("gender",p.getGender());
+        mybundle.putString("phone",p.getPhone());
+        mybundle.putString("weixin",p.getWeixin());
+        mybundle.putString("dan",p.getDan());
+        mybundle.putString("jiebie",p.getJiebie());
+        mybundle.putString("school",p.getSchool());
+        mybundle.putString("grade",p.getGrade());
+        myIntent.putExtras(mybundle);
+        startActivity(myIntent);
         return false;
     }
 
@@ -365,6 +339,7 @@ public class mList extends Fragment implements
 class Group {
 
     private String title;
+    ArrayList<People> child = new ArrayList<People>();
 
     public String getTitle() {
         return title;
@@ -375,6 +350,23 @@ class Group {
     }
 }
 
+class People {
+
+    AVObject people;
+
+    public String getName(){ return people.getString("name");}
+    public String getDuty(){ return people.getString("position");}
+    public String getGender(){ return people.getString("gender");}
+    public String getPhone(){ return people.getString("phone");}
+    public String getWeixin(){ return people.getString("weixin");}
+    public String getJiebie(){ return people.getString("jiebie");}
+    public String getDan(){ return people.getString("duan");}
+    public String getSchool(){ return people.getString("yuanxi");}
+    public String getGrade(){ return people.getString("nianji");}
+
+
+}
+/*
 class People {
 
     private String name;
@@ -388,7 +380,7 @@ class People {
         this.name = name;
     }
 
-    public String getAddress() {
+    public String getDuty() {
         return duty;
     }
 
@@ -397,4 +389,4 @@ class People {
     }
 
 }
-
+*/
