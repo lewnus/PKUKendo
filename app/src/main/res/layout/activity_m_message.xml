@@ -1,14 +1,60 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:background="#f1f1f1">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:orientation="horizontal"
+        android:id="@+id/li"
+        android:background="#353535">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="This is Tab1"
-        android:textSize="50dip"/>
+        <TextView
+            android:gravity="center_horizontal"
+            android:id="@+id/no_use1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:textSize="20sp"
+            android:text="日志"
+            android:textColor="#ffffff"
+            />
+    </LinearLayout>
 
 
-</LinearLayout>
+
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        android:layout_below="@+id/li"
+        android:id="@+id/fragment_rotate_header_with_text_view_frame"
+        xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        cube_ptr:ptr_duration_to_close="200"
+        cube_ptr:ptr_duration_to_close_header="1000"
+        cube_ptr:ptr_keep_header_when_refresh="true"
+        cube_ptr:ptr_pull_to_fresh="false"
+        cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+        cube_ptr:ptr_resistance="1.7">
+
+        <ListView
+            android:id="@+id/rotate_header_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fadingEdge="none"
+            android:listSelector="@android:color/transparent"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:divider="#dbdbdb"
+            android:dividerHeight="3px"
+            android:scrollbarStyle="outsideOverlay"
+            android:choiceMode="singleChoice" />
+
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+
+
+</RelativeLayout>

@@ -60,28 +60,18 @@ public class mList extends Fragment implements
     }
 
 
+boolean flag = false;
 
     @Override
     public void onStart(){
         super.onStart();
-
-        expandableListView = (PinnedHeaderExpandableListView) getActivity().findViewById(R.id.expandablelist);
-     //   stickyLayout = (StickyLayout)getActivity().findViewById(R.id.sticky_layout);
-        initData();
-
-        /*adapter = new MyexpandableListAdapter(this.getActivity());
-        expandableListView.setAdapter(adapter);
-
-        // 展开所有group
-        for (int i = 0, count = expandableListView.getCount(); i < count; i++) {
-            expandableListView.expandGroup(i);
+        if (flag == false) {
+            // first time
+            expandableListView = (PinnedHeaderExpandableListView) getActivity().findViewById(R.id.expandablelist);
+            initData();
+            flag = true;
         }
 
-        expandableListView.setOnHeaderUpdateListener(this);
-        expandableListView.setOnChildClickListener(this);
-        expandableListView.setOnGroupClickListener(this);*/
-
-    //    stickyLayout.setOnGiveUpTouchEventListener(this);
 
     }
 
@@ -366,27 +356,4 @@ class People {
 
 
 }
-/*
-class People {
 
-    private String name;
-    private String duty;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDuty() {
-        return duty;
-    }
-
-    public void setAddress(String address) {
-        this.duty = address;
-    }
-
-}
-*/

@@ -53,5 +53,6 @@
     <color name="swGroup2">#ffe5e5e5</color>>
     <string name="title_activity_info">Info</string>
     <string name="title_activity_info4list">Info4list</string>
+    <string name="title_activity_m_notice">mNotice</string>
 
 </resources>

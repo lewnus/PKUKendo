@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -80,10 +81,17 @@ public class mMe extends Fragment {
         AVUser currentUser = AVUser.getCurrentUser();
         text_name.setText(currentUser.getString("NickName"));
         AVFile avFile = currentUser.getAVFile("Avartar");
+
         avFile.getDataInBackground(new GetDataCallback(){
             public void done(byte[] data, AVException e){
+                if (e==null)
                 cImageView.setImageBitmap(BitmapFactory.decodeByteArray(data, 0, data.length));
+                else {
+                    int x =1;
+                    x++;
+                }
             }
+
         });
 
 

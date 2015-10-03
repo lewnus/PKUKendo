@@ -48,7 +48,7 @@
 
 
     <ScrollView
-        android:paddingTop="50dp"
+        android:layout_marginTop="50dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/top_relative"
@@ -473,7 +473,7 @@
                                 android:layout_height="40dp"
                                 android:gravity="center_vertical"
                                 android:paddingLeft="12.0dip"
-                                android:text="性别"
+                                android:text="年级"
                                 android:textColor="#555555"
                                 android:textSize="16.0sp" />
 

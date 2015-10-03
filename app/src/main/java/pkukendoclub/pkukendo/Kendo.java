@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.tencent.plus.ImageActivity;
+
 import pkukendoclub.pkukendo.fragments.*;
 
 public class Kendo  extends Activity implements View.OnClickListener{
@@ -19,21 +22,26 @@ public class Kendo  extends Activity implements View.OnClickListener{
     private mList mList;
     private mYear mYear;
     private mMe mMe;
+    private mNotice mNotice;
+
 
     private View mMessageLayout;
     private View mListLayout;
     private View mYearLayout;
     private View mMeLayout;
+    private View mNoticeLayout;
 
     private ImageView mMessageImage;
     private ImageView mListImage;
     private ImageView mYearImage;
     private ImageView mMeImage;
+    private ImageView mNoticeImage;
 
     private TextView mMessageText;
     private TextView mListText;
     private TextView mYearText;
     private TextView mMeText;
+    private TextView mNoticeText;
 
     private FragmentManager mFragmentManager;
 
@@ -56,6 +64,7 @@ public class Kendo  extends Activity implements View.OnClickListener{
         mListLayout = findViewById(R.id.firstpage_tab2);
         mYearLayout = findViewById(R.id.firstpage_tab3);
         mMeLayout = findViewById(R.id.firstpage_tab4);
+        mNoticeLayout = findViewById(R.id.firstpage_tab5);
 
 
         //tab buttons
@@ -63,18 +72,21 @@ public class Kendo  extends Activity implements View.OnClickListener{
         mListImage = (ImageView) findViewById(R.id.list_image);
         mYearImage = (ImageView) findViewById(R.id.year_image);
         mMeImage = (ImageView) findViewById(R.id.me_image);
+        mNoticeImage = (ImageView) findViewById(R.id.notice_image);
 
         mMessageText = (TextView) findViewById(R.id.messgae_text);
         mListText = (TextView) findViewById(R.id.list_text);
         mYearText = (TextView) findViewById(R.id.year_text);
         mMeText = (TextView) findViewById(R.id.me_text);
+        mNoticeText = (TextView) findViewById(R.id.notice_text);
+
 
         // button
         mMessageLayout.setOnClickListener(this);
         mListLayout.setOnClickListener(this);
         mYearLayout.setOnClickListener(this);
         mMeLayout.setOnClickListener(this);
-
+        mNoticeLayout.setOnClickListener(this);
 
     }
 
@@ -97,6 +109,8 @@ public class Kendo  extends Activity implements View.OnClickListener{
                 // 当点击了动态tab时，选中第4个tab
                 setTabSelection(3);
                 break;
+            case R.id.firstpage_tab5:
+                setTabSelection(4);
             default:
                 break;
         }
@@ -107,7 +121,7 @@ public class Kendo  extends Activity implements View.OnClickListener{
      * 根据传入的index参数来设置选中的tab页。
      *
      * @param index
-     *            每个tab页对应的下标。0表示message，1表示list，2表示year，3表示me。
+     *            每个tab页对应的下标。0表示message，1表示list，2表示year，3表示me,4 notice。
      */
 
     private void setTabSelection(int index) {
@@ -150,7 +164,7 @@ public class Kendo  extends Activity implements View.OnClickListener{
                 }
                 break;
             case 3:
-            default:
+
                 mMeText.setTextColor(Color.parseColor("#268bfd"));
                 mMeImage.setImageResource(R.drawable.cl);
                 if (mMe == null) {
@@ -160,6 +174,18 @@ public class Kendo  extends Activity implements View.OnClickListener{
                     transaction.show(mMe);
                 }
                 break;
+            case 4:
+
+                mNoticeText.setTextColor(Color.parseColor("#268bfd"));
+                mNoticeImage.setImageResource(R.drawable.cl);
+                if (mNotice == null) {
+                    mNotice = new mNotice();
+                    transaction.add(R.id.firstpage_content, mNotice);
+                } else {
+                    transaction.show(mNotice);
+                }
+                break;
+            default:
         }
         transaction.commit();
     }
@@ -172,6 +198,8 @@ public class Kendo  extends Activity implements View.OnClickListener{
         mYearText.setTextColor(Color.BLACK);
         mMeImage.setImageResource(R.drawable.nocl);
         mMeText.setTextColor(Color.BLACK);
+        mNoticeImage.setImageResource(R.drawable.nocl);
+        mNoticeText.setTextColor(Color.BLACK);
 
     }
 
@@ -187,6 +215,9 @@ public class Kendo  extends Activity implements View.OnClickListener{
         }
         if (mMe != null) {
             transaction.hide(mMe);
+        }
+        if (mNotice != null){
+            transaction.hide(mNotice);
         }
     }
 
