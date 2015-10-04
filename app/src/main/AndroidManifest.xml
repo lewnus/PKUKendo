@@ -13,11 +13,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.GET_TASKS"/>
-
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:allowBackup="true"
@@ -96,6 +94,10 @@
         <activity
             android:name=".fragments.mNotice"
             android:label="@string/title_activity_m_notice" >
+        </activity>
+        <activity
+            android:name=".Article"
+            android:label="@string/title_activity_article" >
         </activity>
     </application>
 

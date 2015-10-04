@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <pkukendoclub.pkukendo.tools.CircleImageView
+        android:id="@+id/img"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        app:border_width="2dp"
+        app:border_color="#dbdbdb"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+
+        android:layout_below="@+id/img"
+        android:layout_alignLeft="@+id/img"
+        android:layout_alignStart="@+id/img"
+        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/img"
+        android:layout_toEndOf="@+id/img"
+        android:layout_toLeftOf="@+id/view_btn"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/name"
+            android:text="孙伟"
+
+            android:textSize="13dp"
+
+            android:singleLine="true"
+            android:ellipsize="end"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:id="@+id/content"
+        android:text="好想找个时间纠正一下基础动作哦"
+        android:layout_toRightOf="@+id/img"
+        android:layout_toEndOf="@+id/img"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="15dp"
+        android:textColor="#000000"
+
+        android:ellipsize="end"
+        />
+
+
+
+
+</RelativeLayout>

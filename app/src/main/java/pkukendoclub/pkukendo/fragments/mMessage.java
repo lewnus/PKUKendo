@@ -1,6 +1,7 @@
 package pkukendoclub.pkukendo.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -35,6 +36,7 @@ import java.util.Map;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
+import pkukendoclub.pkukendo.Article;
 import pkukendoclub.pkukendo.R;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
@@ -63,7 +65,18 @@ public class mMessage extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position >= 0) {
-
+                    //intent
+                    // 把结果显示在album活动中
+                    Intent myIntent =new Intent(getActivity(), Article.class);
+                    Bundle mybundle = new Bundle();
+                    mybundle.putString("title",(String)mData.get(position).get("title"));
+                    mybundle.putString("content",(String)mData.get(position).get("info"));
+                    mybundle.putString("likeNum",Integer.toString((int)mData.get(position).get("likeNum")));
+                    mybundle.putParcelable("img",(Bitmap)mData.get(position).get("img"));
+                    mybundle.putString("name",(String)mData.get(position).get("name"));
+                    mybundle.putString("objectId",(String)mData.get(position).get("objectId"));
+                    myIntent.putExtras(mybundle);
+                    startActivity(myIntent);
                 }
             }
         });
@@ -96,8 +109,9 @@ public class mMessage extends Fragment {
                         map.put("info", postList.get(i).getString("content"));
                         map.put("commentNum", Integer.toString(postList.get(i).getInt("commentNum")));
                         map.put("likeNum",postList.get(i).getInt("likeNum"));
-                        map.put("ObjectId",postList.get(i).getObjectId());
+                        map.put("objectId",postList.get(i).getObjectId());
                         AVUser tempUser = (AVUser)postList.get(i).getAVUser("user").fetch();
+                        map.put("name", tempUser.getString("NickName"));
                         AVFile avFile = tempUser.getAVFile("Avartar");
                         String tempUrl = avFile.getThumbnailUrl(false, 200, 200);
 
