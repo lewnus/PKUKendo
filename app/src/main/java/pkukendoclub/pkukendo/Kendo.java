@@ -52,7 +52,7 @@ public class Kendo  extends Activity implements View.OnClickListener{
 
         initViews();
         mFragmentManager = getFragmentManager();
-        setTabSelection(0);
+        setTabSelection(4);
 
     }
 
@@ -134,7 +134,7 @@ public class Kendo  extends Activity implements View.OnClickListener{
         switch (index) {
             case 0:
                 mMessageText.setTextColor(Color.parseColor("#268bfd"));
-                mMessageImage.setImageResource(R.drawable.cl);
+                mMessageImage.setImageResource(R.drawable.tag1_1);
                 if (mMessage == null) {
                     mMessage = new mMessage();
                     transaction.add(R.id.firstpage_content, mMessage);
@@ -144,7 +144,7 @@ public class Kendo  extends Activity implements View.OnClickListener{
                 break;
             case 1:
                 mListText.setTextColor(Color.parseColor("#268bfd"));
-                mListImage.setImageResource(R.drawable.cl);
+                mListImage.setImageResource(R.drawable.tag2_1);
                 if (mList == null) {
                     mList = new mList();
                     transaction.add(R.id.firstpage_content, mList);
@@ -155,7 +155,7 @@ public class Kendo  extends Activity implements View.OnClickListener{
 
             case 2:
                 mYearText.setTextColor(Color.parseColor("#268bfd"));
-                mYearImage.setImageResource(R.drawable.cl);
+                mYearImage.setImageResource(R.drawable.tag4_1);
                 if (mYear == null) {
                     mYear = new mYear();
                     transaction.add(R.id.firstpage_content, mYear);
@@ -166,7 +166,7 @@ public class Kendo  extends Activity implements View.OnClickListener{
             case 3:
 
                 mMeText.setTextColor(Color.parseColor("#268bfd"));
-                mMeImage.setImageResource(R.drawable.cl);
+                mMeImage.setImageResource(R.drawable.tag5_1);
                 if (mMe == null) {
                     mMe = new mMe();
                     transaction.add(R.id.firstpage_content, mMe);
@@ -177,7 +177,7 @@ public class Kendo  extends Activity implements View.OnClickListener{
             case 4:
 
                 mNoticeText.setTextColor(Color.parseColor("#268bfd"));
-                mNoticeImage.setImageResource(R.drawable.cl);
+                mNoticeImage.setImageResource(R.drawable.tag3_1);
                 if (mNotice == null) {
                     mNotice = new mNotice();
                     transaction.add(R.id.firstpage_content, mNotice);
@@ -190,16 +190,16 @@ public class Kendo  extends Activity implements View.OnClickListener{
         transaction.commit();
     }
     private void clearSelection() {
-        mMessageImage.setImageResource(R.drawable.nocl);
+        mMessageImage.setImageResource(R.drawable.tag1_0);
         mMessageText.setTextColor(Color.BLACK);
-        mListImage.setImageResource(R.drawable.nocl);
+        mListImage.setImageResource(R.drawable.tag2_0);
         mListText.setTextColor(Color.BLACK);
-        mYearImage.setImageResource(R.drawable.nocl);
-        mYearText.setTextColor(Color.BLACK);
-        mMeImage.setImageResource(R.drawable.nocl);
-        mMeText.setTextColor(Color.BLACK);
-        mNoticeImage.setImageResource(R.drawable.nocl);
+        mNoticeImage.setImageResource(R.drawable.tag3_0);
         mNoticeText.setTextColor(Color.BLACK);
+        mYearImage.setImageResource(R.drawable.tag4_0);
+        mYearText.setTextColor(Color.BLACK);
+        mMeImage.setImageResource(R.drawable.tag5_0);
+        mMeText.setTextColor(Color.BLACK);
 
     }
 

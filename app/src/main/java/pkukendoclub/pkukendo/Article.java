@@ -2,6 +2,7 @@ package pkukendoclub.pkukendo;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -50,6 +51,8 @@ public class Article extends ActionBarActivity {
     private List<Map<String, Object>> mData;
     private Bundle bundle;
 
+    private String mclass;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +77,7 @@ public class Article extends ActionBarActivity {
         img.setImageBitmap((Bitmap) bundle.getParcelable("img"));
 
         articleId = bundle.getString("objectId");
-
+        mclass   = bundle.getString("class");
         final mListView listView = (mListView) findViewById(R.id.list_view_comment);
         mData = new ArrayList<Map<String, Object>>();
 
@@ -103,9 +106,20 @@ public class Article extends ActionBarActivity {
                         AVUser tempUser = (AVUser)postList.get(i).getAVUser("user").fetch();
                         map.put("name", tempUser.getString("NickName"));
                         AVFile avFile = tempUser.getAVFile("Avartar");
-                        String tempUrl = avFile.getThumbnailUrl(false, 200, 200);
+                        if (avFile == null){
+                            if (tempUser.getString("gender").equals("男"))
+                            {
+                                Bitmap tempBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.man);
+                                map.put("img",tempBitmap);
+                            }else{
+                                Bitmap tempBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.woman);
+                                map.put("img",tempBitmap);
+                            }
+                        } else {
+                            String tempUrl = avFile.getThumbnailUrl(false, 200, 200);
 
-                        map.put("img", mMessage.getImgByUrl(tempUrl));
+                            map.put("img", mMessage.getImgByUrl(tempUrl));
+                        }
                         mData.add(map);
                     }
 
@@ -115,9 +129,16 @@ public class Article extends ActionBarActivity {
                     if (query2.find().size()>0) likeFlag = 1;
                         else likeFlag = 0;
 
-                    AVQuery<AVObject> query3 = new AVQuery<AVObject>("Article");
-                    query3.whereEqualTo("objectId", articleId);
-                    currentArticle=query3.find().get(0);
+                    if (mclass.equals("a")) {
+                        AVQuery<AVObject> query3 = new AVQuery<AVObject>("Article");
+                        query3.whereEqualTo("objectId", articleId);
+                        currentArticle = query3.find().get(0);
+                    }
+                    else {
+                        AVQuery<AVObject> query3 = new AVQuery<AVObject>("Notice");
+                        query3.whereEqualTo("objectId", articleId);
+                        currentArticle = query3.find().get(0);
+                    }
 
                     return mData;
                 }catch (AVException e){
@@ -145,7 +166,7 @@ public class Article extends ActionBarActivity {
 
                     iLikeIt = (ImageView) findViewById(R.id.img_like);
                     if (likeFlag==0){
-                        iLikeIt.setImageResource(R.drawable.nocl);
+                        iLikeIt.setImageResource(R.drawable.like);
                         iLikeIt.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -170,14 +191,14 @@ public class Article extends ActionBarActivity {
                                     like.saveInBackground();
 
                                     // 变更图像
-                                    iLikeIt.setImageResource(R.drawable.cl);
+                                    iLikeIt.setImageResource(R.drawable.likefilled);
 
                                     likeFlag = 1;
                                 }
                             }
                         });
                     } else {
-                        iLikeIt.setImageResource(R.drawable.cl);
+                        iLikeIt.setImageResource(R.drawable.likefilled);
                     }
 
                     name =  (TextView)findViewById(R.id.content_name);

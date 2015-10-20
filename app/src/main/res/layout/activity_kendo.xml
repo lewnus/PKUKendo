@@ -36,10 +36,10 @@
 
                 <ImageView
                     android:id="@+id/message_image"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/nocl" />
+                     />
 
                 <TextView
                     android:id="@+id/messgae_text"
@@ -68,10 +68,10 @@
 
                 <ImageView
                     android:id="@+id/list_image"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/nocl" />
+                     />
 
                 <TextView
                     android:id="@+id/list_text"
@@ -98,10 +98,10 @@
 
                 <ImageView
                     android:id="@+id/notice_image"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/nocl"/>
+                    />
 
                 <TextView
                     android:id="@+id/notice_text"
@@ -128,10 +128,10 @@
 
                 <ImageView
                     android:id="@+id/year_image"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/nocl"/>
+                    />
 
                 <TextView
                     android:id="@+id/year_text"
@@ -159,10 +159,10 @@
 
                 <ImageView
                     android:id="@+id/me_image"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/nocl"/>
+                    />
 
                 <TextView
                     android:id="@+id/me_text"

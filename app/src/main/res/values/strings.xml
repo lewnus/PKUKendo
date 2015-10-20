@@ -55,5 +55,6 @@
     <string name="title_activity_info4list">Info4list</string>
     <string name="title_activity_m_notice">mNotice</string>
     <string name="title_activity_article">Article</string>
+    <string name="title_activity_edit_page">EditPage</string>
 
 </resources>

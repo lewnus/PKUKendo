@@ -78,7 +78,14 @@ public class mMe extends Fragment {
         cImageView = (ImageView) getActivity().findViewById(R.id.cImageView);
         text_name = (TextView) getActivity().findViewById(R.id.uname);
 
+
+
         AVUser currentUser = AVUser.getCurrentUser();
+        if (currentUser.getString("gender").equals("女"))
+            cImageView.setImageResource(R.drawable.woman);
+        else
+            cImageView.setImageResource(R.drawable.man);
+
         text_name.setText(currentUser.getString("NickName"));
         AVFile avFile = currentUser.getAVFile("Avartar");
 
@@ -87,12 +94,13 @@ public class mMe extends Fragment {
                 if (e==null)
                 cImageView.setImageBitmap(BitmapFactory.decodeByteArray(data, 0, data.length));
                 else {
-                    int x =1;
-                    x++;
+
                 }
             }
 
         });
+        /*String tempUrl = avFile.getThumbnailUrl(false, 200, 200);
+        cImageView.setImageBitmap(mMessage.getImgByUrl(tempUrl));*/
 
 
 

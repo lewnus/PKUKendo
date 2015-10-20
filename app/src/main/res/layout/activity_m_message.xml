@@ -12,6 +12,19 @@
 
         <TextView
             android:gravity="center_horizontal"
+            android:id="@+id/no_use3"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:text=""
+            android:textColor="#ffffff"
+            />
+        <TextView
+            android:gravity="center_horizontal"
             android:id="@+id/no_use1"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
@@ -23,7 +36,20 @@
             android:text="日志"
             android:textColor="#ffffff"
             />
+        <TextView
+            android:gravity="center_horizontal"
+            android:id="@+id/add_message"
+            android:layout_gravity="center_vertical"
+            android:paddingTop="11dp"
+            android:layout_width="50dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:text="添加"
+            android:textColor="#ffffff"
+            />
     </LinearLayout>
+
 
 
 

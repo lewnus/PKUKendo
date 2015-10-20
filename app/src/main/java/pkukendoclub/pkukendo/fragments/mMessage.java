@@ -37,6 +37,7 @@ import java.util.Map;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
 import pkukendoclub.pkukendo.Article;
+import pkukendoclub.pkukendo.EditPage;
 import pkukendoclub.pkukendo.R;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
@@ -49,6 +50,10 @@ public class mMessage extends Fragment {
 
     private List<Map<String, Object>> mData;
 
+    public PtrClassicFrameLayout ptrFrame;
+    public ListView listView;
+    private TextView  add;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +65,7 @@ public class mMessage extends Fragment {
         final View contentView = inflater.inflate(R.layout.activity_m_message, container, false);
 
 
-        final ListView listView = (ListView) contentView.findViewById(R.id.rotate_header_list_view);
+        listView = (ListView) contentView.findViewById(R.id.rotate_header_list_view);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -75,6 +80,7 @@ public class mMessage extends Fragment {
                     mybundle.putParcelable("img",(Bitmap)mData.get(position).get("img"));
                     mybundle.putString("name",(String)mData.get(position).get("name"));
                     mybundle.putString("objectId",(String)mData.get(position).get("objectId"));
+                    mybundle.putString("class","a");
                     myIntent.putExtras(mybundle);
                     startActivity(myIntent);
                 }
@@ -84,72 +90,14 @@ public class mMessage extends Fragment {
 
         mData = new ArrayList<Map<String, Object>>();
 
- //-----------------------------------------------------------------------
 
-        class mAsyncTask extends AsyncTask<ListView, Integer, List<Map<String, Object>> >{
-
-            //该方法并不运行在UI线程内，所以在方法内不能对UI当中的控件进行设置和修改
-            //主要用于进行异步操作
-            @Override
-            protected List<Map<String, Object>> doInBackground(ListView ... params) {
-                try {
-
-                    List<Map<String, Object>> mData;
-                    mData = new ArrayList<Map<String, Object>>();
-
-                    AVQuery<AVObject> query = new AVQuery<AVObject>("Article");
-                    query.whereGreaterThan("num",0);
-                    query.orderByDescending("num");
-
-                    List<AVObject> postList =query.find();
-                    int num = postList.size();
-                    for (int i = 0; i < num; i++) {
-                        Map<String, Object> map = new HashMap<String, Object>();
-                        map.put("title",postList.get(i).getString("title"));
-                        map.put("info", postList.get(i).getString("content"));
-                        map.put("commentNum", Integer.toString(postList.get(i).getInt("commentNum")));
-                        map.put("likeNum",postList.get(i).getInt("likeNum"));
-                        map.put("objectId",postList.get(i).getObjectId());
-                        AVUser tempUser = (AVUser)postList.get(i).getAVUser("user").fetch();
-                        map.put("name", tempUser.getString("NickName"));
-                        AVFile avFile = tempUser.getAVFile("Avartar");
-                        String tempUrl = avFile.getThumbnailUrl(false, 200, 200);
-
-                        map.put("img", getImgByUrl(tempUrl));
-                        mData.add(map);
-                    }
-                    return mData;
-                }catch (AVException e){
-                    return null;
-                }
-
-            }
-
-
-            @Override
-            protected void onPostExecute(List<Map<String, Object>> result) {
-                super.onPostExecute(result);
-                if (result!=null){
-
-                    mData = result;
-                    //handle
-                    MyAdapter adapter = new MyAdapter(getActivity());
-                    listView.setAdapter(adapter);
-
-                }else {
-                    // exception
-
-                }
-            }
-        }
-//-----------------------------------------------------------------------
 
         mAsyncTask asyncTask=new mAsyncTask();
         asyncTask.execute();
 
 
 
-        final PtrClassicFrameLayout ptrFrame = (PtrClassicFrameLayout) contentView.findViewById(R.id.fragment_rotate_header_with_text_view_frame);
+        ptrFrame = (PtrClassicFrameLayout) contentView.findViewById(R.id.fragment_rotate_header_with_text_view_frame);
         ptrFrame.setLastUpdateTimeRelateObject(this);
         ptrFrame.setPtrHandler(new PtrDefaultHandler() {
             @Override
@@ -173,7 +121,114 @@ public class mMessage extends Fragment {
 
 
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        add = (TextView)getActivity().findViewById(R.id.add_message);
+        add.setClickable(true);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Intent intent = new Intent(getActivity(), EditPage.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+    }
+
+
+
+
+
+
+    //-----------------------------------------------------------------------
+
+    class mAsyncTask extends AsyncTask<ListView, Integer, List<Map<String, Object>> >{
+
+        //该方法并不运行在UI线程内，所以在方法内不能对UI当中的控件进行设置和修改
+        //主要用于进行异步操作
+        @Override
+        protected List<Map<String, Object>> doInBackground(ListView ... params) {
+            try {
+
+                List<Map<String, Object>> mData;
+                mData = new ArrayList<Map<String, Object>>();
+
+                AVQuery<AVObject> query = new AVQuery<AVObject>("Article");
+                query.whereGreaterThan("num",0);
+                query.orderByDescending("num");
+
+                List<AVObject> postList =query.find();
+                int num = postList.size();
+                for (int i = 0; i < num; i++) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("title",postList.get(i).getString("title"));
+                    map.put("info", postList.get(i).getString("content"));
+                    map.put("commentNum", Integer.toString(postList.get(i).getInt("commentNum")));
+                    map.put("likeNum",postList.get(i).getInt("likeNum"));
+                    map.put("objectId",postList.get(i).getObjectId());
+                    AVUser tempUser = (AVUser)postList.get(i).getAVUser("user").fetch();
+                    map.put("name", tempUser.getString("NickName"));
+                    AVFile avFile = tempUser.getAVFile("Avartar");
+                    if (avFile == null){
+                        if (tempUser.getString("gender").equals("男"))
+                        {
+                            Bitmap tempBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.man);
+                            map.put("img",tempBitmap);
+                        }else{
+                            Bitmap tempBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.woman);
+                            map.put("img",tempBitmap);
+                        }
+                    }
+                    else {
+                        String tempUrl = avFile.getThumbnailUrl(false, 200, 200);
+                        map.put("img", getImgByUrl(tempUrl));
+                    }
+                    mData.add(map);
+                }
+                return mData;
+            }catch (AVException e){
+                return null;
+            }
+
+        }
+
+
+        @Override
+        protected void onPostExecute(List<Map<String, Object>> result) {
+            super.onPostExecute(result);
+            if (result!=null){
+
+                mData = result;
+                //handle
+                MyAdapter adapter = new MyAdapter(getActivity());
+                listView.setAdapter(adapter);
+
+            }else {
+                // exception
+
+            }
+        }
+    }
+//-----------------------------------------------------------------------
+
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode != getActivity().RESULT_OK) {
+            return;
+        }
+        if (requestCode==0){
+
+
+            mAsyncTask asyncTask=new mAsyncTask();
+            asyncTask.execute();
+            ptrFrame.refreshComplete();
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
 
 
@@ -238,6 +293,9 @@ public class mMessage extends Fragment {
             holder.info.setText((String)mData.get(position).get("info"));
             holder.viewBtn.setText("评论数："+((String)mData.get(position).get("commentNum")));
 
+
+
+
             return convertView;
         }
 
@@ -274,4 +332,3 @@ public class mMessage extends Fragment {
     }
 
 }
-

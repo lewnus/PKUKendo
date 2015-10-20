@@ -74,6 +74,7 @@ public class mNotice extends Fragment {
                     mybundle.putParcelable("img",(Bitmap)mData.get(position).get("img"));
                     mybundle.putString("name",(String)mData.get(position).get("name"));
                     mybundle.putString("objectId",(String)mData.get(position).get("objectId"));
+                    mybundle.putString("class","n");
                     myIntent.putExtras(mybundle);
                     startActivity(myIntent);
                 }
@@ -110,8 +111,19 @@ public class mNotice extends Fragment {
                         map.put("commentNum", Integer.toString(postList.get(i).getInt("commentNum")));
                         map.put("likeNum",postList.get(i).getInt("likeNum"));
                         map.put("objectId",postList.get(i).getObjectId());
-                        map.put("name", postList.get(i).getString("userName"));
-                        Bitmap bmp=BitmapFactory.decodeResource(getResources(),R.drawable.icon);
+                        String name = postList.get(i).getString("userName");
+                        map.put("name",name );
+                        Bitmap bmp;
+                        if(name.equals("社长"))
+                            bmp=BitmapFactory.decodeResource(getResources(),R.drawable.shezhang);
+                        else if (name.equals("财务"))
+                            bmp=BitmapFactory.decodeResource(getResources(),R.drawable.caiwu);
+                        else if (name.equals("训练组"))
+                            bmp=BitmapFactory.decodeResource(getResources(),R.drawable.xunlian);
+                        else
+                            bmp=BitmapFactory.decodeResource(getResources(),R.drawable.lianluo);
+
+
                         map.put("img",bmp);
                         mData.add(map);
                     }
