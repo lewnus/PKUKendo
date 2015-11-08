@@ -39,20 +39,35 @@ import pkukendoclub.pkukendo.*;
 
 import static android.app.Activity.RESULT_CANCELED;
 
+/*
+    界面：我
+
+    保存个人信息。支持
+    1）修改昵称
+    2）修改头像
+    3）修改密码
+    4）登出
+
+
+ */
+
 public class mMe extends Fragment {
 
-    private View mName;
+    public View mName;
     private View mPassword;
     private TableRow mNote;
     private TableRow AboutUs;
-    public  ImageView  cImageView;
-    private String   IMAGE_FILE_NAME= "PKUkendo_tempimg.jpg";
+    public  ImageView  cImageView;                  // 圆头像  用的是开源的包
+    private TextView logout;
+
+    private String   IMAGE_FILE_NAME= "PKUkendo_tempimg.jpg";           //拍照存储临时图片
     private String[] items = new String[] { "选择本地图片", "拍照" };
 
-    public static int clipflag = 0;
+    public static int clipflag = 0;                     // 判断是否裁减了
     public static Bitmap bitmap_from_clip;
 
     private TextView text_name;
+    private int firsttime = 0;          // 判断是否是第一次  用来初始化时候判断
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +81,11 @@ public class mMe extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        init();
+        // 初始化
+        if (firsttime == 0) {
+            firsttime = 1;
+            init();
+        }
     }
 
     private void init(){
@@ -77,14 +96,16 @@ public class mMe extends Fragment {
         AboutUs = (TableRow) getActivity().findViewById(R.id.aboutus);
         cImageView = (ImageView) getActivity().findViewById(R.id.cImageView);
         text_name = (TextView) getActivity().findViewById(R.id.uname);
-
+        logout = (TextView) getActivity().findViewById(R.id.button_logout);
 
 
         AVUser currentUser = AVUser.getCurrentUser();
+        // 根据男女显示默认头像
         if (currentUser.getString("gender").equals("女"))
             cImageView.setImageResource(R.drawable.woman);
         else
             cImageView.setImageResource(R.drawable.man);
+
 
         text_name.setText(currentUser.getString("NickName"));
         AVFile avFile = currentUser.getAVFile("Avartar");
@@ -94,15 +115,11 @@ public class mMe extends Fragment {
                 if (e==null)
                 cImageView.setImageBitmap(BitmapFactory.decodeByteArray(data, 0, data.length));
                 else {
-
+                    // get pic error   do nothing
                 }
             }
 
         });
-        /*String tempUrl = avFile.getThumbnailUrl(false, 200, 200);
-        cImageView.setImageBitmap(mMessage.getImgByUrl(tempUrl));*/
-
-
 
         cImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +133,8 @@ public class mMe extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), mName.class);
-                startActivity(intent);
+                startActivityForResult(intent, 3);      // 注意
+
             }
         });
 
@@ -143,6 +161,17 @@ public class mMe extends Fragment {
                 startActivity(intent);
             }
         });
+
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AVUser.logOut();             //清除缓存用户对象
+                Intent intent = new Intent(getActivity(), FirstPage.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 
@@ -193,7 +222,8 @@ public class mMe extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode!=2 && resultCode != getActivity().RESULT_OK) {
+
+        if (requestCode!=2 && requestCode!=3 && resultCode != getActivity().RESULT_OK) {
 
             return;
         }
@@ -266,6 +296,11 @@ public class mMe extends Fragment {
                     //
 
                 }
+
+                break;
+            case 3:
+
+                text_name.setText( AVUser.getCurrentUser().getString("NickName"));
 
                 break;
         }

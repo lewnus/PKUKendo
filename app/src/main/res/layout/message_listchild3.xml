@@ -44,16 +44,14 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="fill_parent"
         android:id="@+id/content"
-        android:text="好想找个时间纠正一下基础动作哦"
         android:layout_toRightOf="@+id/img"
         android:layout_toEndOf="@+id/img"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="10dp"
         android:textSize="15dp"
         android:textColor="#000000"
-
         android:ellipsize="end"
         />
 

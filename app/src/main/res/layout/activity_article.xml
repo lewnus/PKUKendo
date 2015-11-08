@@ -46,7 +46,8 @@
             android:textSize="20sp"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="1.6"/>
+            android:layout_weight="1.6"
+            android:clickable="true"/>
     </LinearLayout>
 
     <pkukendoclub.pkukendo.tools.CircleImageView
@@ -78,6 +79,7 @@
         android:layout_marginTop="60dp"
         android:layout_width="fill_parent"
         android:layout_height="2dp"
+
         android:background="@drawable/corners_bg3"/>
     <ScrollView
         android:layout_width="wrap_content"
@@ -124,16 +126,27 @@
                 android:layout_marginTop="30dp"
                 android:orientation="horizontal"
                 android:layout_below="@id/content_name">
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:layout_marginRight="30dp"
+                    android:id="@+id/edit"
+                    android:clickable="true"
+                    android:textColor="#1278e1"
+                    android:textSize="17dp"/>
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:id="@+id/img_like"/>
+                    android:id="@+id/img_like"
+                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="3dp"
                     android:paddingLeft="5dp"
                     android:id="@+id/like"
+
                     android:textSize="17dp"/>
             </LinearLayout>
             <TextView

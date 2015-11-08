@@ -2,6 +2,7 @@ package pkukendoclub.pkukendo;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,29 +18,32 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
 
 
-public class EditPage extends ActionBarActivity {
+public class CommentEdit extends ActionBarActivity {
 
+
+    public static int isadd = 0;  // 确认是否添加成功  （父活动使用）
     ImageButton back;
     TextView    save;
-    EditText    title;
     EditText    content;
-
-
+    String articleId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_page);
+        setContentView(R.layout.activity_comment_edit);
 
-        init();
+        Bundle bundle = this.getIntent().getExtras();
+
+        articleId = bundle.getString("articleId");
+
+       init();
 
     }
 
     void init(){
 
-        back = (ImageButton) findViewById(R.id.back_editpage);
-        save = (TextView)    findViewById(R.id.save_editpage);
-        title= (EditText)    findViewById(R.id.title_editpage);
-        content = (EditText) findViewById(R.id.content_editpage);
+        back = (ImageButton) findViewById(R.id.back_cedit);
+        save = (TextView)    findViewById(R.id.save_cedit);
+        content = (EditText) findViewById(R.id.content_cedit);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,23 +55,21 @@ public class EditPage extends ActionBarActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AVObject post = new AVObject("Article");
-                post.put("is_link", false);
-                post.put("content",  content.getText());
-                post.put("title",    title.getText());
-                if (title.getText().toString().equals(""))  {
-                    setDig("标题不能为空");
-                }else if (content.getText().toString().equals("")) {
-                    setDig("日志不能为空");
+                AVObject post = new AVObject("Comment");
+
+                if (content.getText().toString().equals("")) {
+                    setDig("回复不能为空");
                 } else {
-                    post.put("likeNum", 0);
-                    post.put("commentNum", 0);
+                    post.put("content",  content.getText());
+                    post.put("articleId",articleId);
                     post.put("user", AVUser.getCurrentUser());
                     post.saveInBackground(new SaveCallback() {
                         public void done(AVException e) {
                             if (e == null) {
                                 // 保存成功
+                                isadd = 1;
                                 setDig("保存成功");
+
                             } else {
                                 // failed
                                 if (e.getCode() == AVException.INTERNAL_SERVER_ERROR)
@@ -83,6 +85,7 @@ public class EditPage extends ActionBarActivity {
                         }
                     });
 
+
                 }
             }
         });
@@ -95,7 +98,7 @@ public class EditPage extends ActionBarActivity {
 
 
     private void setDig(final String message){
-        new AlertDialog.Builder(EditPage.this)
+        new AlertDialog.Builder(CommentEdit.this)
                 .setTitle(message)
                 .setNegativeButton("确认", new DialogInterface.OnClickListener() {
 

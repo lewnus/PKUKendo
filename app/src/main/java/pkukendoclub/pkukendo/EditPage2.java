@@ -1,3 +1,8 @@
+/*
+*   editpage  是新建日志的界面
+ *  editpage2 是编辑日志的界面
+*/
+
 package pkukendoclub.pkukendo;
 
 import android.app.AlertDialog;
@@ -17,19 +22,26 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
 
 
-public class EditPage extends ActionBarActivity {
+public class EditPage2 extends ActionBarActivity {
 
     ImageButton back;
     TextView    save;
     EditText    title;
     EditText    content;
-
+    String articleId;
+    String stitle;
+    String scontent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_page);
+        setContentView(R.layout.activity_edit_page2);
 
+
+        Bundle bundle = this.getIntent().getExtras();
+        articleId = bundle.getString("articleId");
+        stitle = bundle.getString("title");
+        scontent = bundle.getString("content");
         init();
 
     }
@@ -41,6 +53,9 @@ public class EditPage extends ActionBarActivity {
         title= (EditText)    findViewById(R.id.title_editpage);
         content = (EditText) findViewById(R.id.content_editpage);
 
+        title.setText(stitle);
+        content.setText(scontent);
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,8 +66,7 @@ public class EditPage extends ActionBarActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AVObject post = new AVObject("Article");
-                post.put("is_link", false);
+                AVObject post = AVObject.createWithoutData("Article", articleId);
                 post.put("content",  content.getText());
                 post.put("title",    title.getText());
                 if (title.getText().toString().equals(""))  {
@@ -60,9 +74,6 @@ public class EditPage extends ActionBarActivity {
                 }else if (content.getText().toString().equals("")) {
                     setDig("日志不能为空");
                 } else {
-                    post.put("likeNum", 0);
-                    post.put("commentNum", 0);
-                    post.put("user", AVUser.getCurrentUser());
                     post.saveInBackground(new SaveCallback() {
                         public void done(AVException e) {
                             if (e == null) {
@@ -95,7 +106,7 @@ public class EditPage extends ActionBarActivity {
 
 
     private void setDig(final String message){
-        new AlertDialog.Builder(EditPage.this)
+        new AlertDialog.Builder(EditPage2.this)
                 .setTitle(message)
                 .setNegativeButton("确认", new DialogInterface.OnClickListener() {
 
@@ -103,7 +114,7 @@ public class EditPage extends ActionBarActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         if (message.equals("保存成功"))
-                        edit_finish();
+                            edit_finish();
                     }
                 }).show();
 

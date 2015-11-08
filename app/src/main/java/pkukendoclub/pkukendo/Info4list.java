@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -21,6 +22,7 @@ public class Info4list extends ActionBarActivity {
     private TextView  dan;
     private TextView  school;
     private TextView  grade;
+    private ImageView pic;
 
     private ImageButton back;
 
@@ -42,6 +44,12 @@ public class Info4list extends ActionBarActivity {
         school.setText(bundle.getString("school"));
         grade.setText(bundle.getString("grade"));
 
+
+        if (bundle.getString("gender").equals("女"))
+            pic.setImageResource(R.drawable.woman);
+        else
+            pic.setImageResource(R.drawable.man);
+
     }
 
     private void init(){
@@ -55,6 +63,8 @@ public class Info4list extends ActionBarActivity {
         dan = (TextView) findViewById(R.id.dan_info);
         school = (TextView) findViewById(R.id.school_info);
         grade = (TextView) findViewById(R.id.grade_info);
+        pic = (ImageView) findViewById(R.id.pic);
+
 
         back = (ImageButton) findViewById(R.id.back_info);
         back.setOnClickListener(new View.OnClickListener() {

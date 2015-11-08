@@ -16,7 +16,7 @@
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
             android:paddingRight="20dp"
-            android:id="@+id/back_aboutus"
+            android:id="@+id/back_cedit"
             android:layout_width="0dp"
             android:layout_height="44dp"
             android:scaleType="fitCenter"
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="6"
             android:textSize="20sp"
-            android:text=""
+            android:text="回复"
             android:textColor="#ffffff"
             />
         <TextView
@@ -41,7 +41,7 @@
             android:paddingTop="9dp"
             android:paddingLeft="10dp"
             android:id="@+id/save_cedit"
-            android:text=""
+            android:text="保存"
             android:clickable="true"
             android:textColor="#ffffff"
             android:textSize="20sp"
@@ -50,47 +50,44 @@
             android:layout_weight="1.6"/>
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:id="@+id/imageView3"
-        android:layout_below="@+id/title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:src="@drawable/woman"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PKUKendo"
-        android:textColor="#000000"
-        android:textSize="26dp"
-        android:id="@+id/textView1"
-        android:layout_below="@+id/imageView3"
-        android:layout_centerHorizontal="true" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="北京大学剑道社官方App"
-        android:textColor="#000000"
-        android:textSize="18dp"
-        android:id="@+id/textView2"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/textView1"
-        android:layout_centerHorizontal="true" />
 
-    <TextView
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="作者：孙伟   郭旸泽\n美工：李嘉颐   周怿培\nEmail: 1300012750@pku.edu.cn\nVersion: 1.0.0"
-        android:id="@+id/textView3"
-        android:textColor="#000000"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="15dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginLeft="20dp"/>
+        android:layout_below="@id/title"
+
+        android:layout_marginTop="10dp"
+        android:id="@+id/content_relativelayout">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/content_cedit"
+                android:paddingTop="20dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:textColor="#000000"
+                android:textSize="15dp"
+                android:background="@null"
+                android:hint="点击此处编辑回复"
+                />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:id="@+id/no_use2"
+
+                android:layout_below="@id/content_cedit" />
+        </RelativeLayout>
+
+
+
+
+    </ScrollView>
+
 
 
 </RelativeLayout>

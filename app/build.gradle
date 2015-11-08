@@ -28,4 +28,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'in.srain.cube:ultra-ptr:1.0.11'
 
+    // Library
+    compile project(':libs:pull')
+
+
+
+
 }

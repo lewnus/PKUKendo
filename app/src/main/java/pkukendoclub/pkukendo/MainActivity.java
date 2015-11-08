@@ -15,11 +15,35 @@ import com.avos.avoscloud.AVUser;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/*
+    程序的总入口
 
+    先产生1.5秒的延迟，显示pku_kendo_club界面，然后根据是否有现存账号跳转
+ */
 public class MainActivity extends ActionBarActivity {
 
 
-    private Timer timer;
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // 初始化leancloud
+        AVOSCloud.initialize(this, "ql84x2woif2u3xk7p3qoska4i558v3ornikfkfga1l3ad59n", "frzrwer3k3demoxounucm0ubfqzlvongad1h30avewweycd9");
+
+        timer = new Timer(true);
+        timer.schedule(task,1500);      // 延迟1.5秒
+
+
+    }
+
+
+
+
+    private Timer timer;        //  计时器
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -27,8 +51,7 @@ public class MainActivity extends ActionBarActivity {
 
             if (msg.what == 1) {
 
-                AVUser currentUser = AVUser.getCurrentUser();
-                int x=1;
+                AVUser currentUser = AVUser.getCurrentUser();       // 获得现有账号
                 if (currentUser != null) {
                     Intent myIntent =new Intent(MainActivity.this, Kendo.class);
                     startActivity(myIntent);
@@ -40,6 +63,7 @@ public class MainActivity extends ActionBarActivity {
             } else timer.cancel();
         }
     };
+
     TimerTask task = new TimerTask(){
         public void run() {
             Message message = new Message();
@@ -50,23 +74,11 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        AVOSCloud.initialize(this, "ql84x2woif2u3xk7p3qoska4i558v3ornikfkfga1l3ad59n", "frzrwer3k3demoxounucm0ubfqzlvongad1h30avewweycd9");
-
-        timer = new Timer(true);
-        timer.schedule(task,10000);
-
-
-    }
 
     @Override
     protected void onRestart(){
         super.onRestart();
-        finish();
+        finish();       //   如果返回到这个界面 直接结束这个界面推出程序
     }
 
     @Override

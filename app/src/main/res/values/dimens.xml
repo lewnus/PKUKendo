@@ -5,4 +5,9 @@
 
         <dimen name="base_padding">16dp</dimen>
 
+
+    <dimen name="header_height">60dp</dimen>
+    <dimen name="footer_height">90dp</dimen>
+    <dimen name="footer_padding">10dp</dimen>
+
 </resources>

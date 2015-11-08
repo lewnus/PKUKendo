@@ -7,15 +7,24 @@
     android:background="#000000"
     tools:context="pkukendoclub.pkukendo.FirstPage">
 
-    <TextView
-        android:text="hehe"
-        android:textSize="50dp"
-        android:textColor="#ffffff"
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:id="@+id/imageView"
+
         android:layout_centerVertical="true"
-        />
+        android:layout_centerHorizontal="true"
+        android:src ="@drawable/kendoclub"/>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:layout_marginRight="7dp"
+        android:layout_toLeftOf="@+id/imageView"
+        android:layout_toStartOf="@+id/imageView"
+        android:src="@drawable/peking"/>
 
 
 

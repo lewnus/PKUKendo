@@ -82,7 +82,7 @@ public class mMessage extends Fragment {
                     mybundle.putString("objectId",(String)mData.get(position).get("objectId"));
                     mybundle.putString("class","a");
                     myIntent.putExtras(mybundle);
-                    startActivity(myIntent);
+                    startActivityForResult(myIntent, 1);
                 }
             }
         });
@@ -204,6 +204,7 @@ public class mMessage extends Fragment {
                 MyAdapter adapter = new MyAdapter(getActivity());
                 listView.setAdapter(adapter);
 
+
             }else {
                 // exception
 
@@ -216,15 +217,22 @@ public class mMessage extends Fragment {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (resultCode != getActivity().RESULT_OK) {
-            return;
-        }
+
         if (requestCode==0){
 
 
             mAsyncTask asyncTask=new mAsyncTask();
             asyncTask.execute();
             ptrFrame.refreshComplete();
+
+
+        } else if (requestCode==1&&Article.isedit == 1){
+
+            Article.isedit = 0;
+            mAsyncTask asyncTask=new mAsyncTask();
+            asyncTask.execute();
+            ptrFrame.refreshComplete();
+
 
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -300,8 +308,6 @@ public class mMessage extends Fragment {
         }
 
     }
-
-
 
 
 

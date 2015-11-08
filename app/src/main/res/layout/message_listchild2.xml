@@ -5,7 +5,7 @@
 
     <ImageView
         android:id="@+id/img"
-        android:layout_width="40dp"
+        android:layout_width="30dp"
         android:layout_height="90dp"
         />
     <TextView
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/img"
         android:layout_toEndOf="@+id/img"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="33dp"
         android:layout_marginLeft="10dp"
         >
         <TextView

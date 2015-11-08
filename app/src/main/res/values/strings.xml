@@ -56,5 +56,19 @@
     <string name="title_activity_m_notice">mNotice</string>
     <string name="title_activity_article">Article</string>
     <string name="title_activity_edit_page">EditPage</string>
+    <string name="title_activity_comment_edit">CommentEdit</string>
+    <string name="title_activity_edit_page2">EditPage2</string>
+    <string name="title_activity_m_message2">mMessage2</string>
+
+
+
+
+
+
+
+    <string name="pull_to_refresh_pull_label">下拉刷新</string>
+    <string name="pull_to_refresh_release_label">松开刷新数据</string>
+    <string name="pull_to_refresh_refreshing_label">正在加载...</string>
+    <string name="pull_to_refresh_tap_label"></string>
 
 </resources>

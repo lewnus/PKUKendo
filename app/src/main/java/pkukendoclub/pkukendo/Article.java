@@ -1,6 +1,7 @@
 package pkukendoclub.pkukendo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -31,16 +32,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import pkukendoclub.pkukendo.fragments.mMessage;
 import pkukendoclub.pkukendo.tools.mListView;
 
 
 public class Article extends ActionBarActivity {
 
+
+    static public int isedit = 0;  //纪录是否修改 修改了 改成1    以此提示它的父活动 更新。
+
     private TextView title;
+    private TextView comment;
     private TextView content;
     private TextView name;
     private TextView like;
+    private TextView edit;
+
     private ImageButton back;
     private ImageView iLikeIt;
     private ImageView   img;
@@ -51,7 +59,10 @@ public class Article extends ActionBarActivity {
     private List<Map<String, Object>> mData;
     private Bundle bundle;
 
+    private String right_name;  // 验证是否是本人
     private String mclass;
+
+    public ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,144 +84,29 @@ public class Article extends ActionBarActivity {
             }
         });
 
+
+
         img = (ImageView) findViewById(R.id.img_article);
         img.setImageBitmap((Bitmap) bundle.getParcelable("img"));
 
         articleId = bundle.getString("objectId");
         mclass   = bundle.getString("class");
-        final mListView listView = (mListView) findViewById(R.id.list_view_comment);
+        right_name = bundle.getString("name");
+        listView = (mListView) findViewById(R.id.list_view_comment);
         mData = new ArrayList<Map<String, Object>>();
 
-        //-----------------------------------------------------------------------
 
-        class mAsyncTask extends AsyncTask<mListView, Integer, List<Map<String, Object>> > {
-
-            //该方法并不运行在UI线程内，所以在方法内不能对UI当中的控件进行设置和修改
-            //主要用于进行异步操作
+        comment = (TextView) findViewById(R.id.comment_article);
+        comment.setOnClickListener(new View.OnClickListener() {
             @Override
-            protected List<Map<String, Object>> doInBackground(mListView ... params) {
-                try {
-
-                    List<Map<String, Object>> mData;
-                    mData = new ArrayList<Map<String, Object>>();
-
-                    AVQuery<AVObject> query = new AVQuery<AVObject>("Comment");
-                    query.whereEqualTo("articleId", articleId);
-                    query.orderByAscending("num");
-
-                    List<AVObject> postList =query.find();
-                    int num = postList.size();
-                    for (int i = 0; i < num; i++) {
-                        Map<String, Object> map = new HashMap<String, Object>();
-                        map.put("content", postList.get(i).getString("content"));
-                        AVUser tempUser = (AVUser)postList.get(i).getAVUser("user").fetch();
-                        map.put("name", tempUser.getString("NickName"));
-                        AVFile avFile = tempUser.getAVFile("Avartar");
-                        if (avFile == null){
-                            if (tempUser.getString("gender").equals("男"))
-                            {
-                                Bitmap tempBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.man);
-                                map.put("img",tempBitmap);
-                            }else{
-                                Bitmap tempBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.woman);
-                                map.put("img",tempBitmap);
-                            }
-                        } else {
-                            String tempUrl = avFile.getThumbnailUrl(false, 200, 200);
-
-                            map.put("img", mMessage.getImgByUrl(tempUrl));
-                        }
-                        mData.add(map);
-                    }
-
-                    AVQuery<AVObject> query2 = new AVQuery<AVObject>("Like");
-                    query2.whereEqualTo("article", articleId);
-                    query2.whereEqualTo("user", AVUser.getCurrentUser().getObjectId());
-                    if (query2.find().size()>0) likeFlag = 1;
-                        else likeFlag = 0;
-
-                    if (mclass.equals("a")) {
-                        AVQuery<AVObject> query3 = new AVQuery<AVObject>("Article");
-                        query3.whereEqualTo("objectId", articleId);
-                        currentArticle = query3.find().get(0);
-                    }
-                    else {
-                        AVQuery<AVObject> query3 = new AVQuery<AVObject>("Notice");
-                        query3.whereEqualTo("objectId", articleId);
-                        currentArticle = query3.find().get(0);
-                    }
-
-                    return mData;
-                }catch (AVException e){
-                    return null;
-                }
-
+            public void onClick(View v) {
+                Bundle mybundle = new Bundle();
+                mybundle.putString("articleId",articleId);
+                Intent intent = new Intent(Article.this, CommentEdit.class);
+                intent.putExtras(mybundle);
+                startActivityForResult(intent, 0);
             }
-
-
-            @Override
-            protected void onPostExecute(List<Map<String, Object>> result) {
-                super.onPostExecute(result);
-                if (result!=null){
-
-                    mData = result;
-                    //handle
-                    MyAdapter adapter = new MyAdapter(Article.this);
-                    listView.setAdapter(adapter);
-
-                    content = (TextView)findViewById(R.id.content_article);
-                    content.setText(bundle.getString("content"));
-
-                    like = (TextView)findViewById(R.id.like);
-                    like.setText(currentArticle.getInt("likeNum")+"人已赞");
-
-                    iLikeIt = (ImageView) findViewById(R.id.img_like);
-                    if (likeFlag==0){
-                        iLikeIt.setImageResource(R.drawable.like);
-                        iLikeIt.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (likeFlag==0){
-                                    // 计数器加一
-                                    currentArticle.setFetchWhenSave(true);
-                                    currentArticle.increment("likeNum");
-                                    currentArticle.saveInBackground(new SaveCallback() {
-                                        public void done(AVException e) {
-                                            if (e == null) {
-                                                like.setText(currentArticle.getInt("likeNum")+"人已赞");
-                                            } else {
-                                               //todo network error
-                                            }
-                                        }
-                                    });
-
-                                    // 生成like对象
-                                    AVObject like = new AVObject("Like");
-                                    like.put("article", articleId);
-                                    like.put("user", AVUser.getCurrentUser().getObjectId());
-                                    like.saveInBackground();
-
-                                    // 变更图像
-                                    iLikeIt.setImageResource(R.drawable.likefilled);
-
-                                    likeFlag = 1;
-                                }
-                            }
-                        });
-                    } else {
-                        iLikeIt.setImageResource(R.drawable.likefilled);
-                    }
-
-                    name =  (TextView)findViewById(R.id.content_name);
-                    name.setText(bundle.getString("name"));
-
-                }else {
-                    // exception
-
-                }
-            }
-        }
-//-----------------------------------------------------------------------
+        });
 
         mAsyncTask asyncTask=new mAsyncTask();
         asyncTask.execute();
@@ -219,6 +115,185 @@ public class Article extends ActionBarActivity {
 
     }
 
+
+    //-----------------------------------------------------------------------
+
+    class mAsyncTask extends AsyncTask<mListView, Integer, List<Map<String, Object>> > {
+
+        //该方法并不运行在UI线程内，所以在方法内不能对UI当中的控件进行设置和修改
+        //主要用于进行异步操作
+        @Override
+        protected List<Map<String, Object>> doInBackground(mListView ... params) {
+            try {
+
+                List<Map<String, Object>> mData;
+                mData = new ArrayList<Map<String, Object>>();
+
+                AVQuery<AVObject> query = new AVQuery<AVObject>("Comment");
+                query.whereEqualTo("articleId", articleId);
+                query.orderByAscending("num");
+
+                List<AVObject> postList =query.find();
+                int num = postList.size();
+                for (int i = 0; i < num; i++) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("content", postList.get(i).getString("content"));
+                    AVUser tempUser = (AVUser)postList.get(i).getAVUser("user").fetch();
+                    map.put("name", tempUser.getString("NickName"));
+                    AVFile avFile = tempUser.getAVFile("Avartar");
+                    if (avFile == null){
+                        if (tempUser.getString("gender").equals("男"))
+                        {
+                            Bitmap tempBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.man);
+                            map.put("img",tempBitmap);
+                        }else{
+                            Bitmap tempBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.woman);
+                            map.put("img",tempBitmap);
+                        }
+                    } else {
+                        String tempUrl = avFile.getThumbnailUrl(false, 200, 200);
+
+                        map.put("img", mMessage.getImgByUrl(tempUrl));
+                    }
+                    mData.add(map);
+                }
+
+                AVQuery<AVObject> query2 = new AVQuery<AVObject>("Like");
+                query2.whereEqualTo("article", articleId);
+                query2.whereEqualTo("user", AVUser.getCurrentUser().getObjectId());
+                if (query2.find().size()>0) likeFlag = 1;
+                else likeFlag = 0;
+
+                if (mclass.equals("a")) {
+                    AVQuery<AVObject> query3 = new AVQuery<AVObject>("Article");
+                    query3.whereEqualTo("objectId", articleId);
+                    currentArticle = query3.find().get(0);
+                }
+                else {
+                    AVQuery<AVObject> query3 = new AVQuery<AVObject>("Notice");
+                    query3.whereEqualTo("objectId", articleId);
+                    currentArticle = query3.find().get(0);
+                }
+
+                return mData;
+            }catch (AVException e){
+                return null;
+            }
+
+        }
+
+
+        @Override
+        protected void onPostExecute(List<Map<String, Object>> result) {
+            super.onPostExecute(result);
+            if (result!=null){
+
+                mData = result;
+                //handle
+                MyAdapter adapter = new MyAdapter(Article.this);
+                listView.setAdapter(adapter);
+
+                content = (TextView)findViewById(R.id.content_article);
+                content.setText(bundle.getString("content"));
+
+                like = (TextView)findViewById(R.id.like);
+                like.setText(currentArticle.getInt("likeNum")+"人已赞");
+
+                edit = (TextView) findViewById(R.id.edit);
+                if (mclass.equals("a")&&AVUser.getCurrentUser().getString("NickName").equals(right_name)) {
+                    edit.setText("编辑");
+                    edit.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Bundle mybundle = new Bundle();
+                            mybundle.putString("articleId", articleId);
+                            mybundle.putString("title", title.getText().toString());
+                            mybundle.putString("content", content.getText().toString());
+
+                            Intent intent = new Intent(Article.this, EditPage2.class);
+                            intent.putExtras(mybundle);
+                            startActivityForResult(intent, 1);
+                        }
+                    });
+                }
+
+                iLikeIt = (ImageView) findViewById(R.id.img_like);
+                if (likeFlag==0){
+                    iLikeIt.setImageResource(R.drawable.like);
+                    iLikeIt.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (likeFlag==0){
+                                // 计数器加一
+                                currentArticle.setFetchWhenSave(true);
+                                currentArticle.increment("likeNum");
+                                currentArticle.saveInBackground(new SaveCallback() {
+                                    public void done(AVException e) {
+                                        if (e == null) {
+                                            like.setText(currentArticle.getInt("likeNum")+"人已赞");
+                                        } else {
+                                            //todo network error
+                                        }
+                                    }
+                                });
+
+                                // 生成like对象
+                                AVObject like = new AVObject("Like");
+                                like.put("article", articleId);
+                                like.put("user", AVUser.getCurrentUser().getObjectId());
+                                like.saveInBackground();
+
+                                // 变更图像
+                                iLikeIt.setImageResource(R.drawable.likefilled);
+
+                                likeFlag = 1;
+                            }
+                        }
+                    });
+                } else {
+                    iLikeIt.setImageResource(R.drawable.likefilled);
+                }
+
+                name =  (TextView)findViewById(R.id.content_name);
+                name.setText(bundle.getString("name"));
+
+            }else {
+                // exception
+
+            }
+        }
+    }
+//-----------------------------------------------------------------------
+
+
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+
+        if (requestCode==0){
+
+            if (CommentEdit.isadd ==1) {
+                isedit = 1;
+                CommentEdit.isadd = 0;
+                // add commentnum
+                AVObject post = AVObject.createWithoutData("Article", articleId);
+                post.increment("commentNum");
+                post.saveInBackground();
+                mAsyncTask asyncTask = new mAsyncTask();
+                asyncTask.execute();
+            }
+
+        }else  if (requestCode==1){
+
+            isedit = 1;
+            finish();
+
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -298,7 +373,7 @@ public class Article extends ActionBarActivity {
 
             //holder.img.setBackgroundResource(R.drawable.win10tx);
             holder.img.setImageBitmap((Bitmap)mData.get(position).get("img"));
-            holder.content.setText((String) mData.get(position).get("content"));
+            holder.content.setText( (String) mData.get(position).get("content") +"\n");
             holder.name.setText((String) mData.get(position).get("name"));
 
             return convertView;

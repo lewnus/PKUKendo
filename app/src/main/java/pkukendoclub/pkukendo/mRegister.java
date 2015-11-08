@@ -20,17 +20,23 @@ import com.avos.avoscloud.SignUpCallback;
 
 import pkukendoclub.pkukendo.R;
 
+/*
+    注册界面
+
+    根据用户填写的信息，生成新的用户对象，上传服务器。
+ */
+
 public class mRegister extends ActionBarActivity {
 
     EditText mUsername;
     EditText mNickname;
     EditText mPassword;
     EditText mPass2;
-    int      gender;
+    int      gender;                //  0 = man     1 = woman
 
     TextView male;
     TextView female;
-    TextView mAgreement;
+    //TextView mAgreement;
     TextView Register;
 
     ImageButton mBack;
@@ -44,13 +50,12 @@ public class mRegister extends ActionBarActivity {
 
         init();
 
-
         //init
-        Tab2.setBackgroundColor(0xffffffff);
-        female.setTextColor(0x20129aff);
+        Tab2.setBackgroundColor(0xffffffff);        // 白色
+        female.setTextColor(0x20129aff);            // 蓝色 半透明
 
-        Tab1.setBackgroundColor(0xff129aff);
-        male.setTextColor(0xffffffff);
+        Tab1.setBackgroundColor(0xff129aff);        // 蓝色
+        male.setTextColor(0xffffffff);              // 白色
     }
 
     private void init(){
@@ -64,7 +69,7 @@ public class mRegister extends ActionBarActivity {
         male = (TextView)findViewById(R.id.male_text);
         female = (TextView)findViewById(R.id.female_text);
 
-        mAgreement = (TextView)findViewById(R.id.agreement_register);
+        //mAgreement = (TextView)findViewById(R.id.agreement_register);
         Register = (TextView)findViewById(R.id.button_register);
 
         mBack = (ImageButton) findViewById(R.id.back_register);
@@ -77,14 +82,14 @@ public class mRegister extends ActionBarActivity {
             }
         });
 
-        mAgreement.setOnClickListener(new View.OnClickListener() {
+        /*mAgreement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent intent = new Intent(mRegister.this, Agreement.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +103,6 @@ public class mRegister extends ActionBarActivity {
                 user.setUsername(mUsername.getText().toString());
                 user.setPassword(mPassword.getText().toString());
 
-                // 其他属性可以像其他AVObject对象一样使用put方法添加
                 if (gender == 0)
                 user.put("gender", "男");
                 else
@@ -109,6 +113,10 @@ public class mRegister extends ActionBarActivity {
                 user.signUpInBackground(new SignUpCallback() {
                     public void done(AVException e) {
                         if (e == null) {
+                            /*
+                                这里如果成功直接跳转。
+                                但是没考虑网络不好的情况，如果网速慢，点击按钮没反应。
+                            */
                             Intent intent = new Intent(mRegister.this, Kendo.class);
                             startActivity(intent);
                         } else {

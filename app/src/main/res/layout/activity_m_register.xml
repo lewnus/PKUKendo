@@ -153,18 +153,7 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <TextView
-            android:layout_marginTop="270dp"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_alignParentRight="true"
-            android:text="同意用户注册协议"
-            android:textColor="#129aff"
 
-            android:textSize="14dp"
-            android:id="@+id/agreement_register"
-            />
         <TextView
             android:layout_marginTop="295dp"
             android:layout_width="fill_parent"

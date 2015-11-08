@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
 
+/*
+    这个界面只有两个按钮 一个表示登陆，一个表示注册。
+ */
 
 public class FirstPage extends ActionBarActivity {
 
@@ -21,11 +24,6 @@ public class FirstPage extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_page);
-
-
-
-        //avos
-
 
         //init
         mLogin = (TextView)findViewById(R.id.mLogin);

@@ -175,7 +175,7 @@ public class mYear extends Fragment {
             }
 
 
-            holder.img.setBackgroundResource(R.drawable.win10tx);
+            holder.img.setBackgroundResource(R.drawable.sword);
             //holder.img.setImageBitmap((Bitmap)mData.get(position).get("img"));
             holder.title.setText((String)mData.get(position).get("title"));
             holder.time.setText((String)mData.get(position).get("time"));

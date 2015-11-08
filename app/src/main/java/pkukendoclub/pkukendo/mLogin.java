@@ -22,6 +22,12 @@ import com.avos.avoscloud.SignUpCallback;
 
 import java.io.File;
 
+/*
+  *  登陆界面
+  *
+  *  用leancloud包装的库验证账号密码，如果成功，转到主要活动界面
+*/
+
 
 public class mLogin extends ActionBarActivity {
 
